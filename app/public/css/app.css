@@ -108,10 +108,15 @@
 	border-style: solid;
 }
 
-#insert {
+#radios-insert {
 	margin-top: 45px;
 	margin-bottom: 130px;
 	padding-left: 15px;
+}
+
+#txt-insert {
+	display: none;
+	width: 100%;
 }
 
 #radios-bottom {

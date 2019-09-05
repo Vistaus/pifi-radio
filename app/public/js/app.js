@@ -85,7 +85,7 @@ var view = {
 		$("#lbl-radios").text(lang.sBtnRadios);
 		$("#lbl-player").text(lang.sBtnPlayer);
 		$("#radios-welcome").text(lang.sRadiosWelcome);
-		$("#insert").text(lang.sInsert);
+		$("#lbl-insert").text(lang.sInsert);
 	},
 
 	showPlayer: function() {
@@ -136,6 +136,20 @@ var view = {
 		}, timeConst.volOsd);
 	},
 
+	toggleInsert: function() {
+		if ($("#txt-insert").is(":visible")) {
+			$("#txt-insert").fadeOut();
+		} else {
+			$("#txt-insert").fadeIn();
+			$("#txt-insert").focus();
+		}
+	},
+
+	hideInsert: function() {
+		$("#txt-insert").fadeOut();
+		$("#txt-insert").val("");
+	},
+
 	addListeners: function() {
 		// Prevent href="#" to be executed
 		$('a[href="#"]').click(function(event) {
@@ -171,9 +185,20 @@ var view = {
 			controller.clickRadio(name);
 		});
 
-		$("#insert").click(function(event) {
-			var url = prompt(lang.urlInsert);
-			controller.clickInsert(url);
+		$("#lbl-insert").click(function(event) {
+			view.toggleInsert();
+		});
+
+		$("#txt-insert").focusout(function(event) {
+			view.hideInsert();
+		});
+
+		// Press enter key
+		$("#txt-insert").keyup(function(event) {
+			if (event.keyCode == 13) {
+				var typedUrl = $("#txt-insert").val();
+				controller.enterUrl(typedUrl);
+			}
 		});
 	},
 
@@ -248,9 +273,11 @@ var controller = {
 		}
 	},
 
-	clickInsert: function(url) {
-		if (url !== null && url !== "") {
-			this.playStream(false, url.trim());
+	enterUrl: function(typedUrl) {
+		var url = typedUrl.trim();
+
+		if (url !== "") {
+			this.playStream(false, url);
 		}
 	},
 
