@@ -8,13 +8,11 @@ class PlayerController < ApplicationController
            MPD: "MPD says not found"}
 
   def player
-    @@player
+    @@player ||= Player.new(streams.all,
+                            host = settings.mpd_host,
+                            port = settings.mpd_port,
+                            password = settings.mpd_password)
   end
-
-  @@player = Player.new(settings.streams[:all],
-                        host = settings.mpd_host,
-                        port = settings.mpd_port,
-                        password = settings.mpd_password)
 
   get "/" do
     content_type :json
